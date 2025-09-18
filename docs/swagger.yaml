@@ -1,0 +1,160 @@
+basePath: /api/v1
+definitions:
+  handlers.createCatReq:
+    properties:
+      breed:
+        type: string
+      name:
+        minLength: 2
+        type: string
+      salary_cents:
+        minimum: 0
+        type: integer
+      years_of_experience:
+        minimum: 0
+        type: integer
+    required:
+    - breed
+    - name
+    type: object
+  handlers.createMissionReq:
+    properties:
+      targets:
+        items:
+          properties:
+            country:
+              type: string
+            name:
+              minLength: 2
+              type: string
+            notes:
+              type: string
+          required:
+          - country
+          - name
+          type: object
+        maxItems: 3
+        minItems: 1
+        type: array
+    required:
+    - targets
+    type: object
+  models.Cat:
+    properties:
+      breed:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        minLength: 2
+        type: string
+      salary_cents:
+        minimum: 0
+        type: integer
+      updated_at:
+        type: string
+      years_of_experience:
+        minimum: 0
+        type: integer
+    required:
+    - breed
+    - name
+    type: object
+  models.Mission:
+    properties:
+      assigned_cat_id:
+        type: integer
+      completed:
+        type: boolean
+      created_at:
+        type: string
+      id:
+        type: integer
+      targets:
+        items:
+          $ref: '#/definitions/models.Target'
+        type: array
+      updated_at:
+        type: string
+    type: object
+  models.Target:
+    properties:
+      completed:
+        type: boolean
+      country:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      mission_id:
+        type: integer
+      name:
+        minLength: 2
+        type: string
+      notes:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - country
+    - name
+    type: object
+info:
+  contact: {}
+  description: CRUD API for Spy Cats, Missions and Targets.
+  title: Spy Cat Agency APIgo mod vendor
+  version: "1.0"
+paths:
+  /cats:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Cat payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.createCatReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Cat'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a spy cat
+      tags:
+      - cats
+  /missions:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Mission payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.createMissionReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Mission'
+      summary: Create mission with targets
+      tags:
+      - missions
+schemes:
+- http
+swagger: "2.0"

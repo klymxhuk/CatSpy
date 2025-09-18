@@ -1,0 +1,30 @@
+CREATE TABLE IF NOT EXISTS cats (
+id BIGSERIAL PRIMARY KEY,
+name TEXT NOT NULL,
+years_of_experience INT NOT NULL CHECK (years_of_experience >= 0),
+breed TEXT NOT NULL,
+salary_cents BIGINT NOT NULL CHECK (salary_cents >= 0),
+created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+
+CREATE TABLE IF NOT EXISTS missions (
+id BIGSERIAL PRIMARY KEY,
+assigned_cat_id BIGINT NULL REFERENCES cats(id),
+completed BOOLEAN NOT NULL DEFAULT false,
+created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+
+CREATE TABLE IF NOT EXISTS targets (
+id BIGSERIAL PRIMARY KEY,
+mission_id BIGINT NOT NULL REFERENCES missions(id) ON DELETE CASCADE,
+name TEXT NOT NULL,
+country TEXT NOT NULL,
+notes TEXT NOT NULL DEFAULT '',
+completed BOOLEAN NOT NULL DEFAULT false,
+created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
