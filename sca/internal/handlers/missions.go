@@ -233,7 +233,6 @@ func (h *Handler) AssignCat(c *gin.Context) {
 		return
 	}
 
-	// rely on DB unique index to ensure at most one active mission per cat
 	m.AssignedCatID = &req.CatID
 	res := h.db.Model(&models.Mission{}).
 		Where("id = ? AND completed = false AND assigned_cat_id IS NULL", id).
@@ -302,7 +301,7 @@ func (h *Handler) AddTargets(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "exceeds max 3 targets"})
 		return
 	}
-	// check duplicates against existing and within request
+
 	existing := map[string]struct{}{}
 	for _, et := range m.Targets {
 		existing[et.Name] = struct{}{}
@@ -393,7 +392,6 @@ func (h *Handler) UpdateTarget(c *gin.Context) {
 	}
 
 	if t.Completed {
-		// уже был завершён раньше — любые изменения заметок запрещены
 		c.JSON(400, gin.H{"error": "target completed; notes frozen"})
 		return
 	}
