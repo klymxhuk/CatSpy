@@ -13,7 +13,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 
 	// swagger docs
-	_ "sca/docs" // swagger docs
+	_ "sca/docs"
 
 	"gorm.io/gorm"
 )
@@ -46,7 +46,7 @@ func Router(db *gorm.DB) *gin.Engine {
 		v1.POST("/cats", h.CreateCat)
 		v1.GET("/cats", h.ListCats)
 		v1.GET("/cats/:id", h.GetCat)
-		v1.PATCH("/cats/:id", h.UpdateCat) // salary only
+		v1.PATCH("/cats/:id", h.UpdateCat) 
 		v1.DELETE("/cats/:id", h.DeleteCat)
 		v1.GET("/breeds", h.ListBreeds)
 
@@ -65,7 +65,6 @@ func Router(db *gorm.DB) *gin.Engine {
 	}
 
 	// Swagger
-	// import side-effects in cmd to register docs
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return r
