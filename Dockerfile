@@ -7,11 +7,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-
-# генерируем swagger-доки (main в sca/cmd/sca/main.go)
 RUN $(go env GOPATH)/bin/swag init -g sca/cmd/sca/main.go -o docs
-
-# собираем бинарь В ДРУГУЮ ПАПКУ
 RUN mkdir -p /app/bin \
   && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /app/bin/sca sca/cmd/sca/main.go
 
