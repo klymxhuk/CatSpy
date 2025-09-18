@@ -13,8 +13,8 @@ type bodyLogWriter struct {
 }
 
 func (w bodyLogWriter) Write(b []byte) (int, error) {
-	w.body.Write(b)                  // сохраняем копию
-	return w.ResponseWriter.Write(b) // отдаем дальше клиенту
+	w.body.Write(b)                  
+	return w.ResponseWriter.Write(b) 
 }
 
 func ResponseLogger() gin.HandlerFunc {
@@ -24,7 +24,6 @@ func ResponseLogger() gin.HandlerFunc {
 
 		c.Next()
 
-		// здесь уже после выполнения хэндлера
 		log.Printf("[RESP] %s %s %d -> %s",
 			c.Request.Method,
 			c.Request.URL.Path,
